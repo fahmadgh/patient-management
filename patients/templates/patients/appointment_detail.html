@@ -1,0 +1,97 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}Appointment Details - Patient Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>Appointment Details</h2>
+        <div class="btn-group">
+            {% if appointment.status != 'CANCELLED' and appointment.status != 'COMPLETED' %}
+            <a href="{% url 'appointment_update' appointment.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'appointment_cancel' appointment.pk %}" class="btn btn-danger">Cancel</a>
+            {% endif %}
+            <a href="{% url 'appointment_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+    
+    <div style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem; color: #2c3e50;">Appointment Information</h3>
+        
+        <div class="detail-row">
+            <div class="detail-label">Patient:</div>
+            <div class="detail-value">
+                <a href="{% url 'patient_detail' appointment.patient.pk %}" style="color: #3498db; text-decoration: none;">
+                    {{ appointment.patient.get_full_name }}
+                </a>
+            </div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Doctor:</div>
+            <div class="detail-value">
+                <a href="{% url 'doctor_detail' appointment.doctor.pk %}" style="color: #3498db; text-decoration: none;">
+                    {{ appointment.doctor.get_full_name }}
+                </a>
+            </div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Specialization:</div>
+            <div class="detail-value">{{ appointment.doctor.get_specialization_display }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Date:</div>
+            <div class="detail-value">{{ appointment.appointment_date|date:"l, F d, Y" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Time:</div>
+            <div class="detail-value">{{ appointment.appointment_time|time:"g:i A" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Timezone:</div>
+            <div class="detail-value">{{ appointment.timezone }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Status:</div>
+            <div class="detail-value">
+                <span style="
+                    {% if appointment.status == 'CONFIRMED' %}color: #27ae60;
+                    {% elif appointment.status == 'SCHEDULED' %}color: #3498db;
+                    {% elif appointment.status == 'CANCELLED' %}color: #e74c3c;
+                    {% elif appointment.status == 'COMPLETED' %}color: #95a5a6;
+                    {% endif %}
+                    font-weight: 600;">
+                    {{ appointment.get_status_display }}
+                </span>
+            </div>
+        </div>
+        
+        {% if appointment.notes %}
+        <div class="detail-row">
+            <div class="detail-label">Notes:</div>
+            <div class="detail-value">{{ appointment.notes|linebreaks }}</div>
+        </div>
+        {% endif %}
+        
+        <div class="detail-row">
+            <div class="detail-label">Created By:</div>
+            <div class="detail-value">{{ appointment.created_by.username|default:"System" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Created At:</div>
+            <div class="detail-value">{{ appointment.created_at|date:"M d, Y g:i A" }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Last Updated:</div>
+            <div class="detail-value">{{ appointment.updated_at|date:"M d, Y g:i A" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

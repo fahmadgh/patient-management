@@ -1,0 +1,90 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ doctor.get_full_name }} - Patient Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>{{ doctor.get_full_name }}</h2>
+        <div class="btn-group">
+            <a href="{% url 'doctor_update' doctor.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'doctor_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+    
+    <div style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem; color: #2c3e50;">Doctor Information</h3>
+        
+        <div class="detail-row">
+            <div class="detail-label">Full Name:</div>
+            <div class="detail-value">{{ doctor.get_full_name }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Specialization:</div>
+            <div class="detail-value">{{ doctor.get_specialization_display }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Email:</div>
+            <div class="detail-value">{{ doctor.email }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Phone Number:</div>
+            <div class="detail-value">{{ doctor.phone_number }}</div>
+        </div>
+        
+        <div class="detail-row">
+            <div class="detail-label">Availability Status:</div>
+            <div class="detail-value">
+                {% if doctor.is_available %}
+                <span style="color: #27ae60; font-weight: 600;">✓ Available</span>
+                {% else %}
+                <span style="color: #95a5a6; font-weight: 600;">✗ Unavailable</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if upcoming_appointments %}
+    <div style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem; color: #2c3e50;">Upcoming Appointments</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in upcoming_appointments %}
+                <tr>
+                    <td>{{ appointment.patient.get_full_name }}</td>
+                    <td>{{ appointment.appointment_date|date:"M d, Y" }}</td>
+                    <td>{{ appointment.appointment_time|time:"g:i A" }}</td>
+                    <td>
+                        <span style="
+                            {% if appointment.status == 'CONFIRMED' %}color: #27ae60;
+                            {% elif appointment.status == 'SCHEDULED' %}color: #3498db;
+                            {% elif appointment.status == 'CANCELLED' %}color: #e74c3c;
+                            {% elif appointment.status == 'COMPLETED' %}color: #95a5a6;
+                            {% endif %}
+                            font-weight: 600;">
+                            {{ appointment.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

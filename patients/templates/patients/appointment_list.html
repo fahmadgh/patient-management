@@ -1,0 +1,77 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}Appointments - Patient Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>Appointments</h2>
+        <a href="{% url 'appointment_book' %}" class="btn btn-success">+ Book New Appointment</a>
+    </div>
+    
+    <div class="search-box">
+        <form method="get" style="display: flex; gap: 1rem; width: 100%;">
+            <input type="text" name="q" class="form-control" placeholder="Search by patient or doctor name..." value="{{ query }}">
+            <select name="status" class="form-control" style="max-width: 200px;">
+                <option value="">All Statuses</option>
+                <option value="SCHEDULED" {% if status_filter == 'SCHEDULED' %}selected{% endif %}>Scheduled</option>
+                <option value="CONFIRMED" {% if status_filter == 'CONFIRMED' %}selected{% endif %}>Confirmed</option>
+                <option value="CANCELLED" {% if status_filter == 'CANCELLED' %}selected{% endif %}>Cancelled</option>
+                <option value="COMPLETED" {% if status_filter == 'COMPLETED' %}selected{% endif %}>Completed</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Search</button>
+            {% if query or status_filter %}
+            <a href="{% url 'appointment_list' %}" class="btn btn-secondary">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+    
+    {% if appointments %}
+    <table>
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Timezone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td><strong>{{ appointment.patient.get_full_name }}</strong></td>
+                <td>{{ appointment.doctor.get_full_name }}</td>
+                <td>{{ appointment.appointment_date|date:"M d, Y" }}</td>
+                <td>{{ appointment.appointment_time|time:"g:i A" }}</td>
+                <td>
+                    <span style="
+                        {% if appointment.status == 'CONFIRMED' %}color: #27ae60;
+                        {% elif appointment.status == 'SCHEDULED' %}color: #3498db;
+                        {% elif appointment.status == 'CANCELLED' %}color: #e74c3c;
+                        {% elif appointment.status == 'COMPLETED' %}color: #95a5a6;
+                        {% endif %}
+                        font-weight: 600;">
+                        {{ appointment.get_status_display }}
+                    </span>
+                </td>
+                <td>{{ appointment.timezone }}</td>
+                <td>
+                    <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">📅</div>
+        <h3>No Appointments Found</h3>
+        <p>{% if query or status_filter %}No appointments match your search criteria.{% else %}Get started by booking your first appointment.{% endif %}</p>
+        <a href="{% url 'appointment_book' %}" class="btn btn-success" style="margin-top: 1rem;">+ Book New Appointment</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
