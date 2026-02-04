@@ -14,7 +14,7 @@ A fully functional patient management system built with Django and SQLite, featu
 ## Requirements
 
 - Python 3.8+
-- Django 4.2.11
+- Django 4.2.26
 
 ## Installation
 
@@ -109,7 +109,7 @@ patient-management/
 
 ## Technologies Used
 
-- **Backend**: Django 4.2.11
+- **Backend**: Django 4.2.26
 - **Database**: SQLite3
 - **Frontend**: HTML5, CSS3 (no external CSS frameworks)
 - **Authentication**: Django built-in authentication system
