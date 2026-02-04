@@ -1,0 +1,82 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ patient.get_full_name }} - Patient Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>Patient Details</h2>
+        <div style="display: flex; gap: 1rem;">
+            <a href="{% url 'patient_update' patient.pk %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'patient_delete' patient.pk %}" class="btn btn-danger">Delete</a>
+            <a href="{% url 'patient_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+    
+    <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">Personal Information</h3>
+    
+    <div class="detail-row">
+        <div class="detail-label">Full Name:</div>
+        <div class="detail-value">{{ patient.get_full_name }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Date of Birth:</div>
+        <div class="detail-value">{{ patient.date_of_birth|date:"F d, Y" }} ({{ patient.get_age }} years old)</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Gender:</div>
+        <div class="detail-value">{{ patient.get_gender_display }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Phone Number:</div>
+        <div class="detail-value">{{ patient.phone_number }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Email:</div>
+        <div class="detail-value">{{ patient.email|default:"Not provided" }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Address:</div>
+        <div class="detail-value">{{ patient.address }}</div>
+    </div>
+    
+    <h3 style="color: #2c3e50; margin: 2rem 0 1.5rem;">Medical Information</h3>
+    
+    <div class="detail-row">
+        <div class="detail-label">Medical History:</div>
+        <div class="detail-value">{{ patient.medical_history|default:"No medical history recorded"|linebreaks }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Current Medications:</div>
+        <div class="detail-value">{{ patient.current_medications|default:"No medications recorded"|linebreaks }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Allergies:</div>
+        <div class="detail-value">{{ patient.allergies|default:"No allergies recorded"|linebreaks }}</div>
+    </div>
+    
+    <h3 style="color: #2c3e50; margin: 2rem 0 1.5rem;">Record Information</h3>
+    
+    <div class="detail-row">
+        <div class="detail-label">Created At:</div>
+        <div class="detail-value">{{ patient.created_at|date:"F d, Y g:i A" }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Last Updated:</div>
+        <div class="detail-value">{{ patient.updated_at|date:"F d, Y g:i A" }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div class="detail-label">Created By:</div>
+        <div class="detail-value">{{ patient.created_by.username|default:"Unknown" }}</div>
+    </div>
+</div>
+{% endblock %}

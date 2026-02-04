@@ -1,0 +1,60 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}Patient List - Patient Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="page-header">
+        <h2>Patient List</h2>
+        <a href="{% url 'patient_create' %}" class="btn btn-success">+ Add New Patient</a>
+    </div>
+    
+    <div class="search-box">
+        <form method="get" style="display: flex; gap: 1rem; width: 100%;">
+            <input type="text" name="q" class="form-control" placeholder="Search by name, phone, or email..." value="{{ query }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+            {% if query %}
+            <a href="{% url 'patient_list' %}" class="btn btn-secondary">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+    
+    {% if patients %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date of Birth</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td><strong>{{ patient.get_full_name }}</strong></td>
+                <td>{{ patient.date_of_birth|date:"M d, Y" }}</td>
+                <td>{{ patient.get_age }} years</td>
+                <td>{{ patient.get_gender_display }}</td>
+                <td>{{ patient.phone_number }}</td>
+                <td>{{ patient.email|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'patient_detail' patient.pk %}" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
+        <h3>No Patients Found</h3>
+        <p>{% if query %}No patients match your search criteria.{% else %}Get started by adding your first patient.{% endif %}</p>
+        <a href="{% url 'patient_create' %}" class="btn btn-success" style="margin-top: 1rem;">+ Add New Patient</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
