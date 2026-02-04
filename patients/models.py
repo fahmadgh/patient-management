@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from datetime import datetime, date
 
 # Create your models here.
 
@@ -36,7 +37,6 @@ class Patient(models.Model):
         return f"{self.first_name} {self.last_name}"
     
     def get_age(self):
-        from datetime import date
         today = date.today()
         age = today.year - self.date_of_birth.year - (
             (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day)
@@ -111,7 +111,6 @@ class Appointment(models.Model):
     def clean(self):
         # Validate appointment is not in the past
         if self.appointment_date and self.appointment_time:
-            from datetime import datetime
             appointment_datetime = datetime.combine(self.appointment_date, self.appointment_time)
             if timezone.is_aware(appointment_datetime):
                 appointment_datetime = timezone.make_naive(appointment_datetime)

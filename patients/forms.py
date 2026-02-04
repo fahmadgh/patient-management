@@ -92,7 +92,7 @@ class AppointmentForm(forms.ModelForm):
                 doctor=doctor,
                 appointment_date=appointment_date,
                 appointment_time=appointment_time
-            ).exclude(pk=self.instance.pk if self.instance.pk else None).exclude(status='CANCELLED')
+            ).exclude(pk=self.instance.pk).exclude(status='CANCELLED')
             
             if existing_appointment.exists():
                 raise forms.ValidationError('This time slot is already booked for the selected doctor.')
