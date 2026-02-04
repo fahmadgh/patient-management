@@ -1,13 +1,18 @@
 # Patient Management System
 
-A fully functional patient management system built with Django and SQLite, featuring user authentication and a simple, clean user interface.
+A fully functional patient management system built with Django and SQLite, featuring user authentication, patient management, doctor management, and appointment booking with a simple, clean user interface.
 
 ## Features
 
 - **User Authentication**: Secure login and registration system
 - **Patient Management**: Complete CRUD (Create, Read, Update, Delete) operations for patient records
-- **Search Functionality**: Search patients by name, phone, or email
+- **Doctor Management**: Manage doctor profiles with specializations and availability status
+- **Appointment Booking**: Schedule appointments between patients and doctors with timezone support
+- **Search Functionality**: Search patients by name, phone, or email; search doctors by name or specialization
 - **Comprehensive Patient Records**: Track personal information, medical history, medications, and allergies
+- **Appointment Tracking**: View, update, and cancel appointments with status management
+- **Double Booking Prevention**: Database constraints and validation to prevent scheduling conflicts
+- **Timezone Support**: Book appointments across different timezones (400+ timezones supported)
 - **Responsive UI**: Clean and professional user interface
 - **SQLite Database**: Lightweight database for easy setup and portability
 
@@ -15,6 +20,7 @@ A fully functional patient management system built with Django and SQLite, featu
 
 - Python 3.8+
 - Django 4.2.26
+- pytz (for timezone support)
 
 ## Installation
 
@@ -79,6 +85,56 @@ python manage.py runserver
 - Click "Delete" on the patient detail page
 - Confirm the deletion
 
+### Managing Doctors
+
+**Add a New Doctor:**
+1. Click "Doctors" in the navigation bar
+2. Click "+ Add New Doctor"
+3. Fill in the doctor's information and specialization
+4. Set availability status
+5. Click "Add Doctor" to save
+
+**View Doctor List:**
+- Click "Doctors" in the navigation bar to see all doctors
+- Search doctors by name, specialization, or email
+
+**View Doctor Details:**
+- Click "View" next to any doctor in the list
+- See doctor information and upcoming appointments
+
+**Edit Doctor Information:**
+- Click "Edit" on the doctor detail page
+- Update availability status or other information
+- Click "Update Doctor" to save changes
+
+### Booking and Managing Appointments
+
+**Book a New Appointment:**
+1. Click "Book Appointment" in the navigation bar
+2. Select the patient and doctor from the dropdowns
+3. Choose the appointment date and time
+4. Select your timezone
+5. Add any notes (optional)
+6. Click "Book Appointment" to confirm
+
+**View Appointments:**
+- Click "Appointments" in the navigation bar
+- Filter by status (Scheduled, Confirmed, Cancelled, Completed)
+- Search by patient or doctor name
+
+**View Appointment Details:**
+- Click "View" next to any appointment
+- See complete appointment information including status and notes
+
+**Update an Appointment:**
+- Click "Edit" on the appointment detail page
+- Modify the date, time, or other details
+- Click "Update Appointment" to save
+
+**Cancel an Appointment:**
+- Click "Cancel" on the appointment detail page
+- Confirm the cancellation
+
 ## Admin Panel
 
 Access the Django admin panel at `http://localhost:8000/admin` to manage users and patients with advanced features.
@@ -96,11 +152,16 @@ patient-management/
 │   ├── urls.py                # URL routing
 │   └── wsgi.py                # WSGI configuration
 ├── patients/                  # Patients app
-│   ├── models.py             # Patient model
-│   ├── views.py              # View logic
-│   ├── forms.py              # Forms for patient and user
+│   ├── models.py             # Patient, Doctor, and Appointment models
+│   ├── views.py              # View logic for all features
+│   ├── forms.py              # Forms for patient, doctor, and appointments
 │   ├── urls.py               # URL patterns
 │   ├── templates/            # HTML templates
+│   │   └── patients/         # App-specific templates
+│   │       ├── base.html              # Base template with navigation
+│   │       ├── patient_*.html         # Patient management templates
+│   │       ├── doctor_*.html          # Doctor management templates
+│   │       └── appointment_*.html     # Appointment booking templates
 │   └── admin.py              # Admin configuration
 ├── db.sqlite3                # SQLite database
 ├── manage.py                 # Django management script
