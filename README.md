@@ -114,6 +114,16 @@ patient-management/
 - **Frontend**: HTML5, CSS3 (no external CSS frameworks)
 - **Authentication**: Django built-in authentication system
 
+## Security Notes
+
+⚠️ **Important**: This is a development/demo project. For production use:
+- Change the SECRET_KEY in `settings.py` and store it in environment variables
+- Set `DEBUG = False` in production
+- Configure `ALLOWED_HOSTS` properly
+- Use a production-grade database (PostgreSQL, MySQL, etc.)
+- Enable HTTPS
+- Implement additional security measures as needed
+
 ## License
 
 This project is open source and available under the MIT License.
