@@ -1,0 +1,98 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}Update Appointment - Patient Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ action }} Appointment</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+            {% for error in form.non_field_errors %}
+                <p style="margin: 0;">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="{{ form.patient.id_for_label }}">Patient *</label>
+            {{ form.patient }}
+            {% if form.patient.errors %}
+                <ul class="errorlist">
+                    {% for error in form.patient.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.doctor.id_for_label }}">Doctor *</label>
+            {{ form.doctor }}
+            {% if form.doctor.errors %}
+                <ul class="errorlist">
+                    {% for error in form.doctor.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.appointment_date.id_for_label }}">Appointment Date *</label>
+            {{ form.appointment_date }}
+            {% if form.appointment_date.errors %}
+                <ul class="errorlist">
+                    {% for error in form.appointment_date.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.appointment_time.id_for_label }}">Appointment Time *</label>
+            {{ form.appointment_time }}
+            {% if form.appointment_time.errors %}
+                <ul class="errorlist">
+                    {% for error in form.appointment_time.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.timezone.id_for_label }}">Timezone *</label>
+            {{ form.timezone }}
+            {% if form.timezone.errors %}
+                <ul class="errorlist">
+                    {% for error in form.timezone.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.notes.id_for_label }}">Notes (Optional)</label>
+            {{ form.notes }}
+            {% if form.notes.errors %}
+                <ul class="errorlist">
+                    {% for error in form.notes.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success">{{ action }} Appointment</button>
+            <a href="{% if appointment %}{% url 'appointment_detail' appointment.pk %}{% else %}{% url 'appointment_list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -294,6 +294,9 @@
             <div class="navbar-links">
                 <a href="{% url 'patient_list' %}">Patients</a>
                 <a href="{% url 'patient_create' %}">Add Patient</a>
+                <a href="{% url 'doctor_list' %}">Doctors</a>
+                <a href="{% url 'appointment_list' %}">Appointments</a>
+                <a href="{% url 'appointment_book' %}">Book Appointment</a>
                 <span style="color: #bdc3c7;">|</span>
                 <span>{{ user.username }}</span>
                 <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
